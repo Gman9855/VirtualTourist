@@ -12,15 +12,13 @@ class Flickr {
     
     let METHOD_NAME = "flickr.photos.search"
     let BASE_URL = "https://api.flickr.com/services/rest/"
-    let API_KEY = "672d6269dad2b175f45cd863bacb5053"
+    let API_KEY = "6bdfa41637f43f737fd10cc59b70515f"
     
-    // Method arguments for photo search
     let EXTRAS = "url_m"
     let SAFE_SEARCH = "1"
     let DATA_FORMAT = "json"
     let NO_JSON_CALLBACK = "1"
     
-    // Constants for the bbox
     let BOUNDING_BOX_HALF_WIDTH = 1.0
     let BOUNDING_BOX_HALF_HEIGHT = 1.0
     let LAT_MIN = -90.0
@@ -39,32 +37,22 @@ class Flickr {
     init(lat: Double, lon: Double) {
         session = NSURLSession.sharedSession()
         
-        // For bbox pull
         latitude = lat
         longitude = lon
-        
-        // For street level detail
         ACCURACY = 16
-        
-        // Because Flickr only returns 4000 unique photos, we will limit pages to about upperPageLimit to ensure that we have random pulls with new content.
         upperPageLimit = 112
         resultsPerPage = 36
-        
-        // Initializing to 1 but will be set later by the getPageNumbers function that grabs a random page number within the range (up to upperPageLimit).
         page = 1
     }
     
-    // Helper function to parse JSON data.
     func parseJSONResult(data: NSData) -> NSDictionary?  {
         var parsingError: NSError? = nil
         let parsedResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &parsingError) as! NSDictionary
         return parsedResult
     }
     
-    // The base Flickr search based on the bbox of the pin's latitude and longitude
     func search(completionHandler: (result: AnyObject!, error: NSError?) -> Void) {
         
-        // First, grab a random page from Flickr with the same arguments below
         self.getPageNumbers() {JSONResult, error in
             
             if let error = error {
@@ -87,7 +75,6 @@ class Flickr {
                     "page": self.page
                 ]
                 
-                // Create the API call
                 let urlString = self.BASE_URL + self.escapedParameters(methodArguments)
                 let url = NSURL(string: urlString)!
                 let request = NSURLRequest(URL: url)
@@ -112,7 +99,6 @@ class Flickr {
         
     }
     
-    // Function to grab a random page number from Flickr with the same parameters as the above search call.
     func getPageNumbers(completionHandler: (result: AnyObject!, error: NSError?) -> Void) -> NSURLSessionDataTask {
         
         let methodArguments = [
@@ -139,7 +125,6 @@ class Flickr {
             } else {
                 if let result = self.parseJSONResult(data) {
                     if let photos = result["photos"] as? NSDictionary {
-                        // Here we grab a random number up to the upperPageLimit to ensure content is not repeated.
                         if let numPages = photos["pages"] as? Int {
                             var randomPage = 1
                             if numPages > self.upperPageLimit {
@@ -159,7 +144,6 @@ class Flickr {
         return task
     }
     
-    // Processing images that have a path.
     func taskForImage(filePath: String, completionHandler: (imageData: NSData?, error: NSError?) ->  Void) -> NSURLSessionTask {
         
         let request = NSURLRequest(URL: NSURL(string: filePath)!)
@@ -178,7 +162,6 @@ class Flickr {
         return task
     }
     
-    // Helper function to build escaped parameters for the Flickr call.
     func escapedParameters(parameters: [String: AnyObject]) -> String {
         var urlVars = [String]()
         
@@ -198,7 +181,6 @@ class Flickr {
         return (!urlVars.isEmpty ? "?" : "") + join("&", urlVars)
     }
     
-    // Helper function to build the bbox string
     func createBoundingBoxString() -> String {
         
         /* Fix added to ensure box is bounded by minimum and maximum */
