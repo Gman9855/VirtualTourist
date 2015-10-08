@@ -23,6 +23,7 @@
 		8BF5A3E31BC30807005D52C6 /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF5A3E21BC30807005D52C6 /* PhotoCell.swift */; };
 		8BF5A3EA1BC34058005D52C6 /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BF5A3E91BC34058005D52C6 /* placeholder.png */; };
 		8BF5A3F01BC443E3005D52C6 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF5A3EF1BC443E3005D52C6 /* ImageCache.swift */; };
+		8BF5A3F21BC6EAB4005D52C6 /* ProxyPin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF5A3F11BC6EAB4005D52C6 /* ProxyPin.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +57,7 @@
 		8BF5A3E21BC30807005D52C6 /* PhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
 		8BF5A3E91BC34058005D52C6 /* placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder.png; sourceTree = "<group>"; };
 		8BF5A3EF1BC443E3005D52C6 /* ImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
+		8BF5A3F11BC6EAB4005D52C6 /* ProxyPin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProxyPin.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +147,7 @@
 				8BF5A3D21BC0B78D005D52C6 /* CoreDataStackManager.swift */,
 				8BF5A3D51BC0B7EB005D52C6 /* Model.xcdatamodeld */,
 				8BF5A3D81BC0B873005D52C6 /* Pin.swift */,
+				8BF5A3F11BC6EAB4005D52C6 /* ProxyPin.swift */,
 				8BF5A3DA1BC0B87F005D52C6 /* Photo.swift */,
 				8BF5A3EF1BC443E3005D52C6 /* ImageCache.swift */,
 			);
@@ -261,6 +264,7 @@
 				8BF5A3B51BC0B760005D52C6 /* ViewController.swift in Sources */,
 				8BF5A3B31BC0B760005D52C6 /* AppDelegate.swift in Sources */,
 				8BF5A3D31BC0B78D005D52C6 /* CoreDataStackManager.swift in Sources */,
+				8BF5A3F21BC6EAB4005D52C6 /* ProxyPin.swift in Sources */,
 				8BF5A3D71BC0B7EB005D52C6 /* Model.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -457,6 +461,7 @@
 				8BF5A3CE1BC0B760005D52C6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8BF5A3CF1BC0B760005D52C6 /* Build configuration list for PBXNativeTarget "VirtualTouristTests" */ = {
 			isa = XCConfigurationList;
@@ -465,6 +470,7 @@
 				8BF5A3D11BC0B760005D52C6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

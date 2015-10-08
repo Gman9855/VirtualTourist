@@ -16,7 +16,7 @@ class PhotoCollectionViewController: UIViewController, NSFetchedResultsControlle
     @IBOutlet weak var newCollectionButton: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
     
-    var pin: Pin!
+    var proxyPin: ProxyPin!
     var cache = ImageCache.Caches.imageCache
     var downloadInProgress = false
     
@@ -28,7 +28,7 @@ class PhotoCollectionViewController: UIViewController, NSFetchedResultsControlle
         
         let fetchRequest = NSFetchRequest(entityName: "Photo")
         fetchRequest.sortDescriptors = []
-        let predicate = NSPredicate(format: "pin == %@", argumentArray: [self.pin])
+        let predicate = NSPredicate(format: "pin == %@", argumentArray: [self.proxyPin.pin])
         fetchRequest.predicate = predicate
         
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
@@ -127,7 +127,7 @@ class PhotoCollectionViewController: UIViewController, NSFetchedResultsControlle
         } else if photo.photoImage != nil {
             newImage = photo.photoImage
         } else {
-            var flickr = Flickr(lat: pin.latitude as! Double, lon: pin.longitude as! Double)
+            var flickr = Flickr(lat: proxyPin.latitude, lon: proxyPin.longitude)
             
             let task = flickr.taskForImage(photo.imagePath!) { data, error in
                 if let error = error {
@@ -138,8 +138,9 @@ class PhotoCollectionViewController: UIViewController, NSFetchedResultsControlle
                 
                 if let data = data {
                     let image = UIImage(data: data)
-                    
-                    photo.photoImage = image
+                    self.sharedContext.performBlockAndWait({ () -> Void in
+                        photo.photoImage = image
+                    })
                     
                     dispatch_async(dispatch_get_main_queue()) {
                         cell.imageView!.image = image
@@ -156,10 +157,10 @@ class PhotoCollectionViewController: UIViewController, NSFetchedResultsControlle
     
     func fetchPhotosFromFlickr() {
         
-        if pin.photos.isEmpty {
+        if proxyPin.pin.photos.isEmpty {
             self.toggleButtonsDuringDownload(false, navButtonHidden: true, downloadInProgress: true)
             
-            var flickr = Flickr(lat: pin.latitude as! Double, lon: pin.longitude as! Double)
+            var flickr = Flickr(lat: proxyPin.latitude, lon: proxyPin.longitude)
             flickr.search() {JSONResult, error in
                 if let error = error {
                     println("Download Error")
@@ -171,17 +172,19 @@ class PhotoCollectionViewController: UIViewController, NSFetchedResultsControlle
                                 let label = UILabel(frame: CGRectMake(0, 0, 200, 30))
                                 label.text = "No photos found."
                                 label.sizeToFit()
-                                label.center = self.view.center
+                                label.center = CGPointMake(self.view.bounds.width / 2, self.view.bounds.height / 4)
                                 self.collectionView.addSubview(label)
                             })
                             
                         } else {
-                            var photos = result.map() { (dictionary: [String : AnyObject]) -> Photo in
-                                let photo = Photo(dictionary: dictionary, context: self.sharedContext)
-                                photo.pin = self.pin
-                                return photo
-                            }
-                            self.sharedContext.save(nil)
+                            self.sharedContext.performBlockAndWait({ () -> Void in
+                                var photos = result.map() { (dictionary: [String : AnyObject]) -> Photo in
+                                    let photo = Photo(dictionary: dictionary, context: self.sharedContext)
+                                    photo.pin = self.proxyPin.pin
+                                    return photo
+                                }
+                                self.sharedContext.save(nil)
+                            })
                         }
                         
                         dispatch_async(dispatch_get_main_queue()) {
@@ -213,19 +216,19 @@ class PhotoCollectionViewController: UIViewController, NSFetchedResultsControlle
     
     // Explicitly delete all photos
     func deleteAllPhotos(completionHandler: (succeeded: Bool) -> Void) {
-        for photo in pin.photos {
+        for photo in proxyPin.pin.photos {
             deletePhoto(photo)
         }
-        completionHandler(succeeded: pin.photos.isEmpty)
+        completionHandler(succeeded: proxyPin.pin.photos.isEmpty)
     }
     
     //MARK: View State
     
     func setMapRegionFromPin() {
-        if let pin = pin {
+        if let pin = proxyPin {
             var location = CLLocationCoordinate2D(
-                latitude: pin.coordinate.latitude,
-                longitude: pin.coordinate.longitude
+                latitude: pin.latitude,
+                longitude: pin.longitude
             )
             
             var span = MKCoordinateSpanMake(0.5, 0.5)

@@ -26,7 +26,10 @@ class ViewController: UIViewController, MKMapViewDelegate {
         let fetchRequest = NSFetchRequest(entityName: "Pin")
         var error = NSErrorPointer()
         let savedPins = sharedContext.executeFetchRequest(fetchRequest, error: error) as! [Pin]
-        self.mapView.addAnnotations(savedPins)
+        let proxyPins = savedPins.map { (pin: Pin) -> ProxyPin in
+            return ProxyPin(pin: pin)
+        }
+        self.mapView.addAnnotations(proxyPins)
         
         restoreMapRegion(true)
     }
@@ -41,15 +44,16 @@ class ViewController: UIViewController, MKMapViewDelegate {
         if sender.state == .Began {
             let touchPoint = self.gestureRecognizer.locationInView(self.mapView)
             let touchCoordinate = self.mapView.convertPoint(touchPoint, toCoordinateFromView: self.mapView)
-            let pin = Pin(coordinate: touchCoordinate, context: sharedContext)
-            self.mapView.addAnnotation(pin)
-
+            
+            let pin = Pin(coordinate: touchCoordinate, context: self.sharedContext)
             CoreDataStackManager.sharedInstance().saveContext()
+            let proxyPin = ProxyPin(pin: pin)
+            self.mapView.addAnnotation(proxyPin)
         }
     }
     
     func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
-        if let annotation = annotation as? Pin {
+        if let annotation = annotation as? ProxyPin {
             let identifier = "pin"
             var view: MKPinAnnotationView
             if let dequeuedView = mapView.dequeueReusableAnnotationViewWithIdentifier(identifier) as? MKPinAnnotationView {
@@ -65,10 +69,10 @@ class ViewController: UIViewController, MKMapViewDelegate {
     }
     
     func mapView(mapView: MKMapView!, didSelectAnnotationView view: MKAnnotationView!) {
-        let pin = view.annotation as! Pin
+        let proxyPin = view.annotation as! ProxyPin
         let navController = self.storyboard?.instantiateViewControllerWithIdentifier("photoCollectionNavVC") as! UINavigationController
         let photoCollectionVC = navController.topViewController as! PhotoCollectionViewController
-        photoCollectionVC.pin = pin
+        photoCollectionVC.proxyPin = proxyPin
         self.navigationController?.pushViewController(photoCollectionVC, animated: true)
     }
     
