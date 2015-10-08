@@ -2,13 +2,14 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="XVI-yO-yW9">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Virtual Tourist-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
-                <viewController id="vXZ-lx-hvc" customClass="ViewController" customModule="VirtualTourist" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="vXZ-lx-hvc" customClass="MapViewController" customModule="VirtualTourist" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
                         <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
@@ -64,6 +65,7 @@
                         <viewControllerLayoutGuide type="bottom" id="kaG-Dv-t5h"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="ffi-Ye-Qbs">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XgH-Am-4mN">
@@ -158,16 +160,16 @@
                                 <exclude reference="swL-oQ-uyP"/>
                             </mask>
                             <mask key="constraints">
+                                <exclude reference="66p-Bp-Yr1"/>
+                                <exclude reference="x1a-QT-DO2"/>
+                                <exclude reference="8wI-iz-V0p"/>
+                                <exclude reference="ZM2-aJ-dQx"/>
                                 <exclude reference="gf8-VG-OMF"/>
                                 <exclude reference="u7B-Gs-BOz"/>
                                 <exclude reference="vEh-D6-XTF"/>
                                 <exclude reference="5MS-we-ovy"/>
                                 <exclude reference="Zq8-RH-fdo"/>
                                 <exclude reference="oH2-21-E7r"/>
-                                <exclude reference="8wI-iz-V0p"/>
-                                <exclude reference="ZM2-aJ-dQx"/>
-                                <exclude reference="66p-Bp-Yr1"/>
-                                <exclude reference="x1a-QT-DO2"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
@@ -177,16 +179,16 @@
                                 <include reference="swL-oQ-uyP"/>
                             </mask>
                             <mask key="constraints">
+                                <include reference="66p-Bp-Yr1"/>
+                                <include reference="x1a-QT-DO2"/>
+                                <include reference="8wI-iz-V0p"/>
+                                <include reference="ZM2-aJ-dQx"/>
                                 <include reference="gf8-VG-OMF"/>
                                 <include reference="u7B-Gs-BOz"/>
                                 <include reference="vEh-D6-XTF"/>
                                 <include reference="5MS-we-ovy"/>
                                 <include reference="Zq8-RH-fdo"/>
                                 <include reference="oH2-21-E7r"/>
-                                <include reference="8wI-iz-V0p"/>
-                                <include reference="ZM2-aJ-dQx"/>
-                                <include reference="66p-Bp-Yr1"/>
-                                <include reference="x1a-QT-DO2"/>
                             </mask>
                         </variation>
                     </view>

@@ -209,7 +209,7 @@ class PhotoCollectionViewController: UIViewController, NSFetchedResultsControlle
     //MARK: Core Data
     
     func deletePhoto(photo: Photo) {
-        cache.deletePhotoCache(photo)
+        cache.deletePhotoCacheFromDocumentsDirectory(photo)
         sharedContext.deleteObject(photo)
         sharedContext.save(nil)
     }

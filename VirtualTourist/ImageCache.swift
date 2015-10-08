@@ -45,7 +45,7 @@ class ImageCache {
         data.writeToFile(path, atomically: true)
     }
     
-    func deletePhotoCache(photo: Photo) {
+    func deletePhotoCacheFromDocumentsDirectory(photo: Photo) {
         photo.photoImage = nil
         photo.imagePath = nil
         photo.pin = nil

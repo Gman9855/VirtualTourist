@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  MapViewController.swift
 //  VirtualTourist
 //
 //  Created by Gershy Lev on 10/3/15.
@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 import MapKit
 
-class ViewController: UIViewController, MKMapViewDelegate {
+class MapViewController: UIViewController, MKMapViewDelegate {
 
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet var gestureRecognizer: UILongPressGestureRecognizer!
